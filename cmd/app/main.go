@@ -1,14 +1,18 @@
 // comment
 package main
 
-import "fmt"
+import "github.com/gin-gonic/gin"
 
 func main() {
-	println("Hello World")
-	name := 42
-	fmt.Printf("Hello %s\n", name) // wrong: %s expects a string, got int
-	fmt.Printf("%s\n", "Hello")
-	for range 10 {
-		fmt.Println("Hello")
-	}
+	router := gin.Default()
+	router.GET(
+		"/ping", func(c *gin.Context) {
+			c.JSON(
+				200, gin.H{
+					"message": "pong",
+				},
+			)
+		},
+	)
+	router.Run() // listens on 0.0.0.0:8080 by default
 }

@@ -5,7 +5,9 @@
 # --------------------------
 init: .install-deps
 
-.install-deps:
+.install-deps: go-tidy
+
+go-tidy:
 	@go mod tidy
 
 go-verify:
