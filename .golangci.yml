@@ -1,0 +1,42 @@
+run:
+  timeout: 5m
+  tests: true
+  issues-exit-code: 1
+
+linters:
+  enable:
+    - govet
+    - staticcheck
+    - errcheck
+    - ineffassign
+    - revive
+    - gocritic
+    - gosimple
+    - gofumpt
+    - misspell
+    - gocyclo
+
+linters-settings:
+  gofumpt:
+    extra-rules: true
+  gocyclo:
+    min-complexity: 15
+  staticcheck:
+    checks:
+      - "all"         # enable all checks
+#      - "-ST1000"     # …except specific ones you want to turn off
+
+
+issues:
+  exclude-use-default: false
+  exclude-rules:
+    - path: ".*_generated\\.go"
+      linters: [all]
+    - path: "_test\\.go"
+      linters: [errcheck]
+
+output:
+  formats:
+    - format: colored-line-number  # or: line-number, json, tab, checkstyle, code-climate, sarif
+    - format: line-number
+#    - format: json                  # for CI log parsing

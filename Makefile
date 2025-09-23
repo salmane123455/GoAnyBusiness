@@ -59,7 +59,7 @@ endif
 # //////////////////////
 # 	Code Quality
 # //////////////////////
-quality: go-vet go-static-check go-lint
+quality: go-lint
 
 go-vet:
 	@go vet ./...
