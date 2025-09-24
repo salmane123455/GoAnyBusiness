@@ -1,9 +1,25 @@
 .PHONY: run build stop tests quality
 
+APP_ANY_BUSINESS := any-business
+
+
+# ============================
+# 	Local
+# ============================
+# //////////////////////
+# 	App (any-business)
+# //////////////////////
+run:
+	@go run ./cmd/$(APP_ANY_BUSINESS)/ .
+run-reload:
+	@air -c .air.any-business.toml
+build:
+	@go build -v -o ./bin/any-business ./cmd/any-business
+
 # --------------------------
 # Init
 # --------------------------
-init: .install-deps
+init: update-env-file .install-deps
 
 .install-deps: go-tidy
 
@@ -17,16 +33,11 @@ install-go-static-check:
 	@go install honnef.co/go/tools/cmd/staticcheck@latest
 	@staticcheck --version
 
-# ============================
-# 	Local
-# ============================
-# //////////////////////
-# 	App
-# //////////////////////
-run:
-	@go run ./cmd/app .
-build:
-	@go build -v ./...
+
+update-env-file:
+	@echo 'Updating .env from .env.example 🖋️...'
+	@cp .env.example .env
+	@echo '.env Updated ✨'
 
 # ============================
 #       Docker
