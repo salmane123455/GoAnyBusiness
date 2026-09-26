@@ -13,22 +13,17 @@ type IndexController struct {
 }
 
 func (controller *IndexController) Index(c *gin.Context) {
-	config := controller.config
-	response := []byte(fmt.Sprintf("Welcome to %s V%s", config.AppName, config.AppVersion))
-	c.Data(http.StatusOK, "text/html; charset=utf-8", response)
+	Success(c, fmt.Sprintf("Welcome to %s V%s", controller.config.AppName, controller.config.AppVersion), nil)
 }
 
 func (controller *IndexController) Ping(c *gin.Context) {
-	response := []byte("pong")
-	c.Data(http.StatusOK, "text/html; charset=utf-8", response)
+	c.JSON(http.StatusOK, gin.H{"message": "pong"})
 }
 
 func (controller *IndexController) Alive(c *gin.Context) {
-	response := []byte("OK")
-	c.Data(http.StatusOK, "text/html; charset=utf-8", response)
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
 
 func (controller *IndexController) Ready(c *gin.Context) {
-	response := []byte("OK")
-	c.Data(http.StatusOK, "text/html; charset=utf-8", response)
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
