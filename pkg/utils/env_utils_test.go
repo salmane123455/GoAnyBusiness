@@ -350,4 +350,73 @@ func TestGetEnv(t *testing.T) {
 			}
 		},
 	)
+
+	t.Run(
+		"float64 tests", func(t *testing.T) {
+			tests := []struct {
+				name       string
+				envKey     string
+				envValue   string
+				defaultVal float64
+				want       float64
+				panics     bool
+			}{
+				{
+					name:       "valid float",
+					envKey:     "TEST_FLOAT",
+					envValue:   "3.14",
+					defaultVal: 0,
+					want:       3.14,
+					panics:     false,
+				},
+				{
+					name:       "invalid float panics",
+					envKey:     "TEST_FLOAT",
+					envValue:   "not_a_float",
+					defaultVal: 1.0,
+					want:       1.0,
+					panics:     true,
+				},
+				{
+					name:       "missing env returns default",
+					envKey:     "MISSING_FLOAT",
+					envValue:   "",
+					defaultVal: 2.71,
+					want:       2.71,
+					panics:     false,
+				},
+			}
+
+			for _, tt := range tests {
+				t.Run(
+					tt.name, func(t *testing.T) {
+						defer func() {
+							if r := recover(); r != nil {
+								if !tt.panics {
+									t.Errorf("GetEnvFloat64() panicked: %v", r)
+								}
+							}
+						}()
+
+						if tt.envValue != "" {
+							err := os.Setenv(tt.envKey, tt.envValue)
+							if err != nil {
+								return
+							}
+						}
+
+						got := GetEnvFloat64(tt.envKey, tt.defaultVal)
+
+						if tt.panics {
+							t.Errorf("GetEnvFloat64() should have panicked but didn't")
+						}
+						if got != tt.want {
+							t.Errorf("GetEnvFloat64() = %v, want %v", got, tt.want)
+						}
+						cleanup(tt.envKey)
+					},
+				)
+			}
+		},
+	)
 }

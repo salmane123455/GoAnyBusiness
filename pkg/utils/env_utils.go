@@ -56,6 +56,17 @@ func GetEnvStringSlice(key string, defaultVal []string) []string {
 	return defaultVal
 }
 
+func GetEnvFloat64(key string, defaultVal float64) float64 {
+	if val, ok := os.LookupEnv(key); ok {
+		if valFloat, err := strconv.ParseFloat(val, 64); err != nil {
+			panic(fmt.Sprintf("Invalid value float64 for %s: %s", key, val))
+		} else {
+			return valFloat
+		}
+	}
+	return defaultVal
+}
+
 func GetEnvIntSlice(key string, defaultVal []int) []int {
 	if val, ok := os.LookupEnv(key); ok && strings.TrimSpace(val) != "" {
 		items := strings.Split(val, ",")
